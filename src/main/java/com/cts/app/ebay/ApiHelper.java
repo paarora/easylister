@@ -164,12 +164,13 @@ public class ApiHelper {
 		PictureDetailsType picDetailsType = new PictureDetailsType();
 		// picDetailsType.setPictureURL(new String[]
 		// {"http://i.ebayimg.com/04/!BPoEM4!BWk~$(KGrHgoH-CgEjlLl1-OzBJ0kciTH9Q~~_1.JPG"});
-		/*picDetailsType.setExternalPictureURL(veh.getImages().toArray(
-				new String[veh.getImages().size()]));*/
+		picDetailsType.setExternalPictureURL(veh.getImages().toArray(
+				new String[veh.getImages().size()]));
 		
 		// TODO
-		picDetailsType.setExternalPictureURL(new String[]
-		                                		{"http://images.autotrader.com/scaler/544/408/images/2013/4/8/338/965/30866700495.338965775.IM1.MAIN.565x421_A.562x421.jpg"});
+		//picDetailsType.setExternalPictureURL(new String[]
+		//                                		{"http://images.autotrader.com/scaler/544/408/images/2013/4/8/338/965/30866700495.338965775.IM1.MAIN.565x421_A.562x421.jpg"});
+		
 		item.setPictureDetails(picDetailsType);
 
 		List<NameValueListType> nvList = new ArrayList<NameValueListType>();

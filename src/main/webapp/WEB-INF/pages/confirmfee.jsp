@@ -61,7 +61,7 @@ font-weight: bold;
 					align="middle" alt="Easylister" /></td>
 			</tr>
 			<tr class="spaceUnder">
-				<td colspan="2" align="center" class="green">You will be charged ${fee} for listing
+				<td colspan="2" align="center" class="green">You will be charged $${fee} for listing
 					this item.</td>
 			</tr>
 			<tr class="spaceUnder">

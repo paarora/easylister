@@ -857,6 +857,24 @@ td {
 													<td class=" h13">&nbsp;</td>
 												</tr>
 												<tr>
+													<td class="bold">Interior color <span class="fldmadry">*</span>
+													</td>
+												</tr>
+												<tr>
+													<td>
+													<form:select path="interiorColour" >
+														<form:options items="${vehicle.allInteriorColors}"/>
+													</form:select>
+
+															
+														<div id="errorColor" style="display: none;"
+															class="colrff0">Please select an interior color</div>
+													</td>
+												</tr>
+												<tr>
+													<td class=" h13">&nbsp;</td>
+												</tr>
+												<tr>
 													<td class="bold">Contact number <span class="fldmadry"></span>
 													</td>
 												</tr>
@@ -890,32 +908,10 @@ td {
 													</td>
 												</tr>
 												<tr>
-													<td><span class="bold"> <select
-															id="attr1137_10244" name="attr1137_10244">
-																<option value="10425">New</option>
-																<option value="47603">Certified pre-owned</option>
-																<option value="10426" selected>Used</option>
-														</select> </span>
-													</td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-												</tr>
-												<tr>
-													<td class="bold">Existing warranty <span
-														class="fldmadry">*</span>
-													</td>
-												</tr>
-												<tr>
-													<td><span class="bold"> <select
-															id="attr1137_10242" name="attr1137_10242">
-																<option value="10721">Vehicle has an existing
-																	warranty (specify details in description)</option>
-																<option value="10722">Vehicle does NOT have an
-																	existing warranty</option>
-																<option value="-12" selected>Unspecified</option>
-
-														</select> </span>
+													<td>
+													<form:select path="condition" >
+														<form:options items="${vehicle.allConditions}"/>
+													</form:select>
 													</td>
 												</tr>
 												<tr>

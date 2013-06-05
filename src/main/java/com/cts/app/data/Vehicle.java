@@ -200,9 +200,9 @@ public class Vehicle {
 
 	public Map<String, String> getTransmissions() {
 		HashMap<String, String> trsSelect = new HashMap<String, String>();
-		trsSelect.put("10427", "Automatic");
-		trsSelect.put("10428", "Manual");
-		trsSelect.put("-12", "Unspecified");
+		trsSelect.put("Automatic", "Automatic");
+		trsSelect.put("Manual", "Manual");
+		trsSelect.put("Unspecified", "Unspecified");
 		return trsSelect;
 	}
 
@@ -284,18 +284,18 @@ public class Vehicle {
 
 	public Map<String, String> getAllInteriorColors() {
 		TreeMap<String, String> iColorSelect = new TreeMap<String, String>();
-		iColorSelect.put("2288", "Black");
-		iColorSelect.put("2289", "Blue");
-		iColorSelect.put("2290", "Brown");
-		iColorSelect.put("10409", "Burgundy");
-		iColorSelect.put("10407", "Gold");
-		iColorSelect.put("2291", "Grey");
-		iColorSelect.put("2196", "Green");
-		iColorSelect.put("2375", "Red");
-		iColorSelect.put("2287", "Tan");
-		iColorSelect.put("10422", "Teal");
-		iColorSelect.put("2317", "White");
-		iColorSelect.put("-12", "Other");
+		iColorSelect.put("Black", "Black");
+		iColorSelect.put("Blue", "Blue");
+		iColorSelect.put("Brown", "Brown");
+		iColorSelect.put("Burgundy", "Burgundy");
+		iColorSelect.put("Gold", "Gold");
+		iColorSelect.put("Grey", "Grey");
+		iColorSelect.put("Green", "Green");
+		iColorSelect.put("Red", "Red");
+		iColorSelect.put("Tan", "Tan");
+		iColorSelect.put("Teal", "Teal");
+		iColorSelect.put("White", "White");
+		iColorSelect.put("Other", "Other");
 		return iColorSelect;
 	}
 
@@ -324,46 +324,15 @@ public class Vehicle {
 		this.allCylinders = allCylinders;
 	}
 
-	Map<String, String> allBodyTypes;
+	Map<String, String> allConditions;
 
-	public Map<String, String> getAllBodyTypes() {
-		TreeMap<String, String> bodySelect = new TreeMap<String, String>();
-		bodySelect.put("-10", "-");
-		bodySelect.put("2041", "-");
-		bodySelect.put("2048", "Coupe");
-		bodySelect.put("10174", "Hatchback");
-		bodySelect.put("10401", "Limousine");
-		bodySelect.put("2049", "Minivan/Van");
-		bodySelect.put("2047", "Pickup truck");
-		bodySelect.put("2045", "Sedan");
-		bodySelect.put("2042", "SUV");
-		bodySelect.put("2043", "Wagon");
-		bodySelect.put("-12", "Other");
-		return bodySelect;
+	public Map<String, String> getAllConditions() {
+		TreeMap<String, String> conditionSelect = new TreeMap<String, String>();
+		conditionSelect.put("New", "New");
+		conditionSelect.put("Certified pre-owned", "Certified pre-owned");
+		conditionSelect.put("Used", "Used");
+		return conditionSelect;
 	}
 
-	public void setAllBodyTypes(Map<String, String> allBodyTypes) {
-		this.allBodyTypes = allBodyTypes;
-	}
-
-	Map<String, String> allFuelTypes;
-
-	public Map<String, String> getAllFuelTypes() {
-		TreeMap<String, String> fuelSelect = new TreeMap<String, String>();
-		fuelSelect.put("39825", "Biodiesel");
-		fuelSelect.put("47599", "CNG");
-		fuelSelect.put("47643", "Diesel");
-		fuelSelect.put("39286", "Electric");
-		fuelSelect.put("48327", "Ethanol - FFV");
-		fuelSelect.put("39827", "Ethanol - FFV");
-		fuelSelect.put("47601", "Ethanol - FFV");
-		fuelSelect.put("47602", "Steam");
-		fuelSelect.put("-12", "Steam");
-		return fuelSelect;
-	}
-
-	public void setAllFuelTypes(Map<String, String> allFuelTypes) {
-		this.allFuelTypes = allFuelTypes;
-	}
 
 }

@@ -64,7 +64,7 @@ font-family:"Verdana",Sans-serif;
 				</tr>
 				<tr>
 					<td colspan="2" align="center" class="smallText">* If you want to list item
-						manually, please click <a href="/easylister/form">here</a> </td>
+						manually, please click <a href="/easylister/blankform">here</a> </td>
 				</tr>
 			</table>
 		</form>

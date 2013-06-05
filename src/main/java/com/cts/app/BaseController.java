@@ -23,26 +23,41 @@ import com.cts.app.parser.ItemParser;
 import com.cts.app.parser.ItemParserFactory;
 import com.cts.app.parser.util.ErrorEnum;
 
-
-@SessionAttributes({"vehicle"})
+@SessionAttributes({ "vehicle" })
 @Controller
 @RequestMapping("/")
 public class BaseController {
-	
+
 	public static HttpSession session() {
-	    ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-	    return attr.getRequest().getSession(true); // true == allow create
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder
+				.currentRequestAttributes();
+		return attr.getRequest().getSession(true); // true == allow create
 	}
-	
-	@RequestMapping(value="/welcome", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
 	public String welcome(ModelMap model) {
-		model.addAttribute("message", "Maven Web Project + Spring 3 MVC - welcome()");
-		//Spring uses InternalResourceViewResolver and return back index.jsp
+		model.addAttribute("message",
+				"Maven Web Project + Spring 3 MVC - welcome()");
+		// Spring uses InternalResourceViewResolver and return back index.jsp
 		return "index";
- 
+
 	}
- 
-	@RequestMapping(value="/form", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/blankform", method = RequestMethod.GET)
+	public ModelAndView form(ModelMap model) {
+		ModelAndView mav = new ModelAndView("form");
+		session().setAttribute("veh", null);
+
+		Vehicle veh = new Vehicle();
+		mav.addObject("vehicle", veh);
+
+		// model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " +
+		// name);
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public ModelAndView form(@RequestParam String url, ModelMap model) {
 		ModelAndView mav = new ModelAndView("form");
 		System.out.println(url);
@@ -56,26 +71,29 @@ public class BaseController {
 			e.printStackTrace();
 		}
 		List<ErrorEnum> errors = null;
-		if(veh!=null)
+		if (veh != null)
 			errors = VehicleValidator.validateVehicle(veh);
 		mav.addObject("vehicle", veh);
 		mav.addObject("error", errors);
-		//model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " + name);
+		// model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " +
+		// name);
 		return mav;
- 
+
 	}
-	
-	@RequestMapping(value="/form", method = RequestMethod.POST)
-	public ModelAndView form(@ModelAttribute("vehicle") Vehicle veh, ModelMap model) {
+
+	@RequestMapping(value = "/form", method = RequestMethod.POST)
+	public ModelAndView form(@ModelAttribute("vehicle") Vehicle veh,
+			ModelMap model) {
 		List<ErrorEnum> errors = VehicleValidator.validateVehicle(veh);
-		if(errors.size()>0){
+		session().setAttribute("veh", null);
+		if (errors.size() > 0) {
 			ModelAndView mav = new ModelAndView("form");
 			mav.addObject("vehicle", veh);
 			mav.addObject("error", errors);
 			return mav;
 		} else {
 			ApiRespose resp = ApiHelper.getInstance().verifyAddItem(veh);
-			if(resp.isCallSuccessful()){
+			if (resp.isCallSuccessful()) {
 				ModelAndView mav = new ModelAndView("confirmfee");
 				session().setAttribute("veh", veh);
 				mav.addObject("vehicle", veh);
@@ -88,24 +106,33 @@ public class BaseController {
 				return mav;
 			}
 		}
- 
+
 	}
-	
-	@RequestMapping(value="/confirmfee", method = RequestMethod.POST)
-	public ModelAndView confirmFee(@ModelAttribute("vehicle") Vehicle veh, @ModelAttribute("fee") String fee, ModelMap model) {	
+
+	@RequestMapping(value = "/confirmfee", method = RequestMethod.POST)
+	public ModelAndView confirmFee(@ModelAttribute("vehicle") Vehicle veh,
+			@ModelAttribute("fee") String fee, ModelMap model) {
 		ModelAndView mav = new ModelAndView("confirmfee");
 		mav.addObject("vehicle", veh);
 		mav.addObject("fee", fee);
 		return mav;
 	}
-	
-	@RequestMapping(value="/listed", method = RequestMethod.POST)
-	public ModelAndView listed(@ModelAttribute("confirm") String confirm, ModelMap model) {	
-		ModelAndView mav = new ModelAndView("listed");
-		Vehicle veh = (Vehicle)session().getAttribute("veh");
-		ApiRespose resp = ApiHelper.getInstance().addItem(veh);
-		mav.addObject("url", resp.getItemUrl());
-		return mav;
+
+	@RequestMapping(value = "/listed", method = RequestMethod.POST)
+	public ModelAndView listed(@ModelAttribute("confirm") String confirm,
+			ModelMap model) {
+
+		Vehicle veh = (Vehicle) session().getAttribute("veh");
+		if ("true".equalsIgnoreCase(confirm)) {
+			ModelAndView mav = new ModelAndView("listed");
+			ApiRespose resp = ApiHelper.getInstance().addItem(veh);
+			mav.addObject("url", resp.getItemUrl());
+			return mav;
+		} else {
+			ModelAndView mav = new ModelAndView("form");
+			mav.addObject("vehicle", veh);
+			return mav;
+		}
 	}
 
 }
