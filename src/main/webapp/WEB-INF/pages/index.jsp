@@ -24,51 +24,52 @@ tr.spaceUnder>td {
 .floatRight {
 	float: right;
 }
+
 .smallText {
-font-size:12px;
-font-family:"Verdana",Sans-serif;
+	font-size: 12px;
+	font-family: "Verdana", Sans-serif;
 }
 </style>
 <body>
+	<table width=900 class="center">
+		<tr>
+			<td>
+				<div class="floatRight">
+					<table height="150">
+						<tr valign="top">
+							<td><a href="/easylister/history?user=testuser_paarora">HISTORY</a></td>
+							<td>|</td>
+							<td><a href="/easylister/welcome">HOME</a></td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<form name="form" method="GET" action="/easylister/form">
 		<table width=900 class="center">
+			<tr class="spaceUnder">
+				<td colspan="2" align="center"><img
+					src="http://s20.postimg.org/5uhdqunf1/logo7.png" width="450"
+					align="middle" alt="Easylister" /></td>
+			</tr>
+			<tr class="spaceUnder">
+				<td colspan="2" align="center"><input type="text"
+					class="inputField" name="url" id="url" /></td>
+			</tr>
+			<tr class="spaceUnder">
+				<td colspan="2" align="center"><input type="image"
+					src="http://s20.postimg.org/4hzooypzd/IMPORT_BUTTON.png"
+					width="130" alt="submit" name="submit" /></td>
+			</tr>
 			<tr>
-				<td>
-					<div class="floatRight">
-						<table height="150">
-							<tr valign="top">
-								<td>HISTORY</td>
-								<td>|</td>
-								<td>HOME</td>
-							</tr>
-						</table>
-					</div></td>
+				<td colspan="2" align="center" class="smallText">* If you want
+					to list item manually, please click <a href="/easylister/blankform">here</a>
+				</td>
 			</tr>
 		</table>
-		<form name="form" method="GET" action="/easylister/form">
-			<table width=900 class="center">
-				<tr class="spaceUnder">
-					<td colspan="2" align="center"><img
-						src="http://s20.postimg.org/5uhdqunf1/logo7.png"
-						width="450" align="middle" alt="Easylister" /></td>
-				</tr>
-				<tr class="spaceUnder">
-					<td colspan="2" align="center"><input type="text"
-						class="inputField" name="url" id="url" /></td>
-				</tr>
-				<tr class="spaceUnder">
-					<td colspan="2" align="center">
-					
-					<input type="image" src="http://s20.postimg.org/4hzooypzd/IMPORT_BUTTON.png" width="130" alt="submit" name="submit" />
-					
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center" class="smallText">* If you want to list item
-						manually, please click <a href="/easylister/blankform">here</a> </td>
-				</tr>
-			</table>
-		</form>
-		
-		
+	</form>
+
+
 </body>
 </html>

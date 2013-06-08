@@ -537,9 +537,9 @@ td {
 				<div class="floatRight">
 					<table >
 						<tr valign="top">
-							<td>HISTORY</td>
+							<td><a href="/easylister/history?user=testuser_paarora">HISTORY</a></td>
 							<td>|</td>
-							<td>HOME</td>
+							<td><a href="/easylister/welcome">HOME</a></td>
 						</tr>
 					</table>
 				</div>

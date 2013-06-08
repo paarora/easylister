@@ -48,9 +48,9 @@ font-size: 1em;
 				<div class="floatRight">
 					<table height="150">
 						<tr valign="top">
-							<td>HISTORY</td>
+							<td><a href="/easylister/history?user=testuser_paarora">HISTORY</a></td>
 							<td>|</td>
-							<td>HOME</td>
+							<td><a href="/easylister/welcome">HOME</a></td>
 						</tr>
 					</table>
 				</div>

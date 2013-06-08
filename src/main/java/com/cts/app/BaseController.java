@@ -71,8 +71,10 @@ public class BaseController {
 			e.printStackTrace();
 		}
 		List<ErrorEnum> errors = null;
-		if (veh != null)
+		if (veh != null){
 			errors = VehicleValidator.validateVehicle(veh);
+			veh = VehicleValidator.cleanupVehicle(veh);
+		}
 		mav.addObject("vehicle", veh);
 		mav.addObject("error", errors);
 		// model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " +
@@ -85,6 +87,7 @@ public class BaseController {
 	public ModelAndView form(@ModelAttribute("vehicle") Vehicle veh,
 			ModelMap model) {
 		List<ErrorEnum> errors = VehicleValidator.validateVehicle(veh);
+		veh = VehicleValidator.cleanupVehicle(veh);
 		session().setAttribute("veh", null);
 		if (errors.size() > 0) {
 			ModelAndView mav = new ModelAndView("form");
