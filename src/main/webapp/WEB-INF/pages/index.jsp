@@ -49,9 +49,9 @@ tr.spaceUnder>td {
 	<form name="form" method="GET" action="/easylister/form">
 		<table width=900 class="center">
 			<tr class="spaceUnder">
-				<td colspan="2" align="center"><img
+				<td colspan="2" align="center"><a href="/easylister/welcome"><img
 					src="http://s20.postimg.org/5uhdqunf1/logo7.png" width="450"
-					align="middle" alt="Easylister" /></td>
+					align="middle" alt="Easylister" /></a></td>
 			</tr>
 			<tr class="spaceUnder">
 				<td colspan="2" align="center"><input type="text"

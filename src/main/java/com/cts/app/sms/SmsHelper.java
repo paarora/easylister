@@ -1,4 +1,4 @@
-/*package com.cts.app.sms;
+package com.cts.app.sms;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,4 +46,3 @@ public class SmsHelper {
 		  
 	  }
 }
-*/

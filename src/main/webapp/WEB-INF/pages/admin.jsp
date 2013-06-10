@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin Page</title>
 </head>
 <style type="text/css">
 body {
@@ -70,9 +70,10 @@ table.b4,table.b4 tr,table.b4 td {
 				<div class="floatRight">
 					<table>
 						<tr valign="top">
-							<td><a href="/easylister/history?user=testuser_paarora">HISTORY</a></td>
+							<td><a href="/easylister/admin">HISTORY</a></td>
 							<td>|</td>
-							<td><a href="/easylister/welcome">HOME</a></td>
+							<td><a href="/easylister/admin?highPrice=true">HIGH
+									PRICE LISTINGS</a></td>
 						</tr>
 					</table>
 				</div>
@@ -89,12 +90,25 @@ table.b4,table.b4 tr,table.b4 td {
 		</tr>
 		<tr>
 			<td>
+				<div style="float:right">
+				<form action="/easylister/admin" method="post">
+		Search Transaction : 
+		<input type="text" id="id" name="id" size="10"
+							value="${id}">
+							<input type="submit" value="Submit" />
+					</form>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<table>
 					<tr>
-						<td class="pad20top">Hello <b>${user}</b>,</td>
+						<td class="pad20top">Hello <b>ADMIN</b>,
+						</td>
 					</tr>
 					<tr>
-						<td class="pad10">Here is the hitory of your transactions on
+						<td class="pad10">Here is the hitory of transactions on
 							easylister</td>
 					</tr>
 				</table>

@@ -1,5 +1,6 @@
 package com.cts.app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,11 +19,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cts.app.data.Vehicle;
 import com.cts.app.data.VehicleValidator;
+import com.cts.app.db.DatabaseHelper;
+import com.cts.app.db.TransactionRecord;
 import com.cts.app.ebay.ApiHelper;
 import com.cts.app.ebay.ApiRespose;
+import com.cts.app.ebay.PostProcessor;
 import com.cts.app.parser.ItemParser;
 import com.cts.app.parser.ItemParserFactory;
-import com.cts.app.parser.util.ErrorEnum;
+import com.cts.app.parser.util.Errors;
 
 @SessionAttributes({ "vehicle" })
 @Controller
@@ -47,12 +52,9 @@ public class BaseController {
 	public ModelAndView form(ModelMap model) {
 		ModelAndView mav = new ModelAndView("form");
 		session().setAttribute("veh", null);
-
 		Vehicle veh = new Vehicle();
 		mav.addObject("vehicle", veh);
-
-		// model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " +
-		// name);
+		mav.addObject("error", new Errors());
 		return mav;
 
 	}
@@ -66,12 +68,13 @@ public class BaseController {
 		Vehicle veh = null;
 		try {
 			veh = parser.parseItem(url);
+			veh.setUrl(url);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		List<ErrorEnum> errors = null;
-		if (veh != null){
+		Errors errors = null;
+		if (veh != null) {
 			errors = VehicleValidator.validateVehicle(veh);
 			veh = VehicleValidator.cleanupVehicle(veh);
 		}
@@ -86,10 +89,10 @@ public class BaseController {
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public ModelAndView form(@ModelAttribute("vehicle") Vehicle veh,
 			ModelMap model) {
-		List<ErrorEnum> errors = VehicleValidator.validateVehicle(veh);
+		Errors errors = VehicleValidator.validateVehicle(veh);
 		veh = VehicleValidator.cleanupVehicle(veh);
 		session().setAttribute("veh", null);
-		if (errors.size() > 0) {
+		if (errors.getIsErrorPresent()) {
 			ModelAndView mav = new ModelAndView("form");
 			mav.addObject("vehicle", veh);
 			mav.addObject("error", errors);
@@ -122,20 +125,58 @@ public class BaseController {
 	}
 
 	@RequestMapping(value = "/listed", method = RequestMethod.POST)
-	public ModelAndView listed(@ModelAttribute("confirm") String confirm,
+	public ModelAndView listed(@RequestParam(required=false , value="confirm") String confirm,
 			ModelMap model) {
-
 		Vehicle veh = (Vehicle) session().getAttribute("veh");
 		if ("true".equalsIgnoreCase(confirm)) {
 			ModelAndView mav = new ModelAndView("listed");
 			ApiRespose resp = ApiHelper.getInstance().addItem(veh);
+			new PostProcessor().postProcess(veh, resp);
 			mav.addObject("url", resp.getItemUrl());
 			return mav;
 		} else {
 			ModelAndView mav = new ModelAndView("form");
 			mav.addObject("vehicle", veh);
+			mav.addObject("error", new Errors());
 			return mav;
 		}
+	}
+
+	@RequestMapping(value = "/history", method = RequestMethod.GET)
+	public ModelAndView history(@RequestParam("user") String user,
+			ModelMap model) {
+		ModelAndView mav = new ModelAndView("history");
+		mav.addObject("user", user);
+		List<TransactionRecord> transRecords = new DatabaseHelper()
+				.readRecords(user);
+		mav.addObject("records", transRecords);
+		return mav;
+
+	}
+	
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public ModelAndView adminGet(@RequestParam(required=false , value ="highPrice") String highPrice,
+			ModelMap model) {
+		ModelAndView mav = new ModelAndView("admin");
+		List<TransactionRecord> transRecords = new ArrayList<TransactionRecord>();
+		if("true".equalsIgnoreCase(highPrice)){
+			transRecords = new DatabaseHelper().getHighPriceRecord();
+		} else {
+			transRecords = new DatabaseHelper().getAll();
+		}
+		mav.addObject("records", transRecords);
+		return mav;
+
+	}
+	
+	@RequestMapping(value = "/admin", method = RequestMethod.POST)
+	public ModelAndView adminPost(@RequestParam(required=false , value = "id") String id, ModelMap model) {
+		ModelAndView mav = new ModelAndView("admin");
+		mav.addObject("id", id);
+		List<TransactionRecord> transRecords = new DatabaseHelper().getRecord(id);
+		mav.addObject("records", transRecords);
+		return mav;
+
 	}
 
 }

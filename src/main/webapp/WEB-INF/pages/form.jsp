@@ -1,4 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="com.cts.app.data.Vehicle"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.Iterator"%>
@@ -72,6 +73,12 @@ td {
 	padding: 5px;
 }
 
+.colrff0 {
+	color: #FF0000;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
 .bold {
 	font-weight: bold;
 }
@@ -141,6 +148,25 @@ td {
 }
 .floatRight {
 	float: right;
+}
+.padding5{
+	border-spacing: 0;padding: 5px;
+}
+.alignMiddle{
+	vertical-align: middle;
+}
+ul {
+            display:table-row;
+        }
+ul li
+        {
+            list-style: circle outside;
+    		margin-left: 10px;
+            vertical-align: middle;
+        }
+li:before {
+    content: "* ";
+    color: red;
 }
 </style>
 <script type="text/javascript">
@@ -517,15 +543,23 @@ td {
 			img4 = document.getElementById('picimg4');
 		if(imgURL1 && imgURL1.value && img1){
 			img1.src = imgURL1.value;
+		} else {
+			img1.src = 'http://s20.postimg.org/9e0k8ewi1/emptyimage.jpg';
 		}
 		if(imgURL2 && imgURL2.value && img2){
 			img2.src = imgURL2.value;
+		} else {
+			img2.src = 'http://s20.postimg.org/9e0k8ewi1/emptyimage.jpg';
 		}
 		if(imgURL3 && imgURL3.value && img3){
 			img3.src = imgURL3.value;
+		} else {
+			img3.src = 'http://s20.postimg.org/9e0k8ewi1/emptyimage.jpg';
 		}
 		if(imgURL4 && imgURL4.value && img4){
 			img4.src = imgURL4.value;
+		} else {
+			img4.src = 'http://s20.postimg.org/9e0k8ewi1/emptyimage.jpg';
 		}
 	}
 </script>
@@ -548,8 +582,8 @@ td {
 		<tr>
 			<td>
 				<div class="borderBottom">
-					<img src="http://s20.postimg.org/5uhdqunf1/logo7.png" width="400"
-						align="middle" alt="Easylister" />
+					<a href="/easylister/welcome"><img src="http://s20.postimg.org/5uhdqunf1/logo7.png" width="400"
+						align="middle" alt="Easylister" /></a>
 				</div></td>
 		</tr>
 		<tr>
@@ -568,40 +602,118 @@ td {
 						<tr>
 							<td>
 								<div id="pageerror"
-									style="padding: 10px; margin-bottom: 10px; display: none;"
+									style="padding: 5px;<c:choose>
+																<c:when test = "${error.isErrorPresent}">
+																	display: block;
+																</c:when> 
+																<c:otherwise>
+																	display: none;
+																</c:otherwise> 
+															</c:choose>"
 									class="b4">
-									<table width="100%" border="0" cellspacing="0" cellpadding="0">
+									<table width="100%" class="padding5">
+										
 										<tr>
-											<td width="25"><img
-												src="http://s20.postimg.org/7v563fpxl/iconerror_16x16.gif" />
-											</td>
-											<td><div id="pageErrorHeader" class="colrff0 bold"></div>
-											</td>
-										</tr>
-										<tr>
-											<td rowspan="2">&nbsp;</td>
-											<td><ul class="colrff0">
-													<li id="titleli" style="display: none;">Please enter a
+											<td class="alignMiddle"><ul class="colrff0">
+													<li id="titleli" style="
+													<c:choose>
+																<c:when test = "${error.isTitleValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>
+															">Please enter a
 														valid title</li>
-													<li id="makeli" style="display: none;">Please select a
+													<li id="makeli" style="<c:choose>
+																<c:when test = "${error.isMakeValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please select a
 														make</li>
-													<li id="modelli" style="display: none;">Please select
+													<li id="modelli" style="<c:choose>
+																<c:when test = "${error.isModelValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please select
 														a model</li>
-													<li id="yearli" style="display: none;">Please select a
+													<li id="yearli" style="<c:choose>
+																<c:when test = "${error.isYearValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please select a
 														year</li>
-													<li id="zipli" style="display: none;">Please enter a
+													<li id="zipli" style="<c:choose>
+																<c:when test = "${error.isZipValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please enter a
 														valid zip code</li>
-													<li id="priceli" style="display: none;">Please enter a
+													<li id="priceli" style="<c:choose>
+																<c:when test = "${error.isPriceValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please enter a
 														valid price</li>
-													<li id="vinli" style="display: none;">Please enter a
+													<li id="tsli" style="<c:choose>
+																<c:when test = "${error.isTitleStatusValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please select a valid title status</li>
+													<li id="vinli" style="<c:choose>
+																<c:when test = "${error.isVINValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please enter a
 														valid VIN number</li>
-													<li id="mileageli" style="display: none;">Please enter
+													<li id="mileageli" style="<c:choose>
+																<c:when test = "${error.isMileageValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please enter
 														valid mileage</li>
-													<li id="numberli" style="display: none;">Please enter
-														a valid phone number</li>
-													<li id="descli" style="display: none;">Please enter
+													<li id="descli" style="<c:choose>
+																<c:when test = "${error.isDescriptionValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">Please enter
 														valid description</li>
-													<li id="picli" style="display: none;">At least one
+													<li id="picli" style="<c:choose>
+																<c:when test = "${error.isImagesValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>">At least one
 														image is required</li>
 
 												</ul>
@@ -613,18 +725,7 @@ td {
 							</td>
 						</tr>
 						<tr>
-							<td>&nbsp; <input type="hidden" id="pic1" name="pic1"
-								value="" onchange=synchPictures();></input> <input type="hidden"
-								id="pic2" name="pic2" value="" onchange=synchPictures();></input>
-								<input type="hidden" id="pic3" name="pic3" value=""
-								onchange=synchPictures();></input> <input type="hidden"
-								id="pic4" name="pic4" value="" onchange=synchPictures();></input>
-								<input type="hidden" id="pic5" name="pic5" value=""
-								onchange=synchPictures();></input> <input type="hidden"
-								id="pic6" name="pic6" value="" onchange=synchPictures();></input>
-								<input type="hidden" id="pic7" name="pic7" value=""
-								onchange=synchPictures();></input> <input type="hidden"
-								id="pic8" name="pic8" value="" onchange=synchPictures();></input>
+							<td>&nbsp; 
 							</td>
 						</tr>
 						<tr>
@@ -654,7 +755,15 @@ td {
 														<div class="x_SV">Keywords help buyers find your
 															listing. Choose keywords that help describe your vehicle,
 															such as color, condition, body style, and unique options.</div>
-														<div id="errorDescTitle" style="display: none;"
+														<div id="errorDescTitle" style="
+															<c:choose>
+																<c:when test = "${error.isTitleValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>"
 															class="colrff0">Please enter a valid title</div>
 													</td>
 												</tr>
@@ -679,7 +788,15 @@ td {
 															<option value='${makes.key}'}>${makes.key}</option>
 															</c:forEach>
 													</select> --%>
-														<div id="errorMake" style="display: none;" class="colrff0">Please
+														<div id="errorMake" style="
+															<c:choose>
+																<c:when test = "${error.isMakeValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>" class="colrff0">Please
 															select a make</div></td>
 												</tr>
 												<tr>
@@ -696,7 +813,15 @@ td {
 														disabled="disabled" >
 															<option value="-1" selected="selected">Any</option>
 													</select>
-														<div id="errorModel" style="display: none;"
+														<div id="errorModel" style="
+															<c:choose>
+																<c:when test = "${error.isModelValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>"
 															class="colrff0">Please select a model</div>
 													</td>
 												</tr>
@@ -712,9 +837,16 @@ td {
 													<form:select path="year">
 														<form:options items="${vehicle.years}"/>
 													</form:select>
-													
-													
-														<div id="errorYear" style="display: none;" class="colrff0">Please
+														<div id="errorYear" style="
+															<c:choose>
+																<c:when test = "${error.isYearValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose> 
+														" class="colrff0">Please
 															select a year</div>
 													</td>
 												</tr>
@@ -730,7 +862,16 @@ td {
 														size="10" maxlength="5" value="${vehicle.zip}" />
 														<div class="x_SV">Enter only a 5 digit numeric
 															value.</div>
-														<div id="errorZip" style="display: none;" class="colrff0">Please
+															<div id="errorZip" style="
+															<c:choose>
+																<c:when test = "${error.isZipValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose> 
+														" class="colrff0">Please
 															enter a valid zip code</div>
 													</td>
 												</tr>
@@ -747,7 +888,14 @@ td {
 														size="12" maxlength="8" value="${vehicle.price}" />
 														<div class="x_SV">Enter only numeric value, don't
 															use "," or "." or "$".</div>
-														<div id="errorPrice" style="display: none;"
+														<div id="errorPrice" style="<c:choose>
+																<c:when test = "${error.isPriceValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>"
 															class="colrff0">Please enter a valid price</div>
 													</td>
 												</tr>
@@ -765,7 +913,14 @@ td {
 													<form:select path="titleStatus">
 														<form:options items="${vehicle.allTitleStatus}"/>
 													</form:select>
-														<div id="errorTitle" style="display: none;"
+														<div id="errorTitle" style="<c:choose>
+																<c:when test = "${error.isTitleStatusValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>"
 															class="colrff0">Please select a title</div>
 													</td>
 												</tr>
@@ -781,7 +936,15 @@ td {
 														maxlength="17" value="${vehicle.vin}" />
 														<div class="x_SV">Required for all vehicles with a
 															model year of 1981 or later. 17 character limit.</div>
-														<div id="errorVin" style="display: none;" class="colrff0">Please
+														<div id="errorVin" style="
+														<c:choose>
+																<c:when test = "${error.isVINValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>" class="colrff0">Please
 															enter a valid VIN number</div>
 													</td>
 												</tr>
@@ -796,7 +959,14 @@ td {
 													<td><input type="text" id="mileage" name="mileage"
 														size="30" maxlength="6" value="${vehicle.mileage}" />
 														<div class="x_SV">Max. value 999999</div>
-														<div id="errorMileage" style="display: none;"
+														<div id="errorMileage" style="<c:choose>
+																<c:when test = "${error.isMileageValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>"
 															class="colrff0">Please enter valid mileage</div>
 													</td>
 												</tr>
@@ -896,7 +1066,14 @@ td {
 													<td style="white-space: nowrap"><textarea tabindex="1"
 															id="description" cols="60" rows="7" rows="10"
 															name="description">${vehicle.description}</textarea>
-														<div id="errorDescription" style="display: none;"
+														<div id="errorDescription" style="<c:choose>
+																<c:when test = "${error.isDescriptionValid}">
+																	display: none;
+																</c:when> 
+																<c:otherwise>
+																	display: block;
+																</c:otherwise> 
+															</c:choose>"
 															class="colrff0">Please enter valid description</div>
 													</td>
 												</tr>

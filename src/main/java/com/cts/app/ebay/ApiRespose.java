@@ -1,14 +1,11 @@
 package com.cts.app.ebay;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cts.app.parser.util.ErrorEnum;
+import com.cts.app.parser.util.Errors;
 
 public class ApiRespose {
 	
 	boolean isCallSuccessful = false;
-	List<ErrorEnum> errors = new ArrayList<ErrorEnum>();
+	Errors errors = new Errors();
 	Double fee = null;
 	String itemUrl = null;
 	public String getItemUrl() {
@@ -23,10 +20,10 @@ public class ApiRespose {
 	public void setCallSuccessful(boolean isCallSuccessful) {
 		this.isCallSuccessful = isCallSuccessful;
 	}
-	public List<ErrorEnum> getErrors() {
+	public Errors getErrors() {
 		return errors;
 	}
-	public void setErrors(List<ErrorEnum> errors) {
+	public void setErrors(Errors errors) {
 		this.errors = errors;
 	}
 	public Double getFee() {
