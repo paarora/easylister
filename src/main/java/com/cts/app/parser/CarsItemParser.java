@@ -166,7 +166,18 @@ public class CarsItemParser implements ItemParser{
 						|| transmissionString.indexOf("MANUA") != -1)
 					vehicle.setTransmission(ParserConstants.MANUAL);
 			}
-
+			
+			NodeList sellerAddress = extract(divs,
+					new HasAttributeFilter(ParserConstants.ID,
+							ParserConstants.C_SELLER_ADDRESS));
+			NodeList sellerAddressContent = extract(sellerAddress,
+					new TagNameFilter(ParserConstants.SPAN));
+			NodeList sellerAddressNode = extract(sellerAddressContent,
+					new HasAttributeFilter(ParserConstants.CLASS,
+							ParserConstants.DATA));
+			String address = getSecondValue(sellerAddressNode);
+			vehicle.setZip(ExtractDataHtmlHelper.extractZip(address));
+			
 			NodeList sellersNotes = extract(divs,
 					new HasAttributeFilter(ParserConstants.ID,
 							ParserConstants.SELLERNOTES));
@@ -220,6 +231,16 @@ public class CarsItemParser implements ItemParser{
 		String value = null;
 		if (nodeValue != null && nodeValue.elementAt(0) != null) {
 			value = nodeValue.elementAt(0).toPlainTextString();
+			value = ExtractDataHtmlHelper.formatText(value);
+			value = value.trim();
+		}
+		return value;
+	}
+	
+	private String getSecondValue(NodeList nodeValue) {
+		String value = null;
+		if (nodeValue != null && nodeValue.elementAt(1) != null) {
+			value = nodeValue.elementAt(1).toPlainTextString();
 			value = ExtractDataHtmlHelper.formatText(value);
 			value = value.trim();
 		}

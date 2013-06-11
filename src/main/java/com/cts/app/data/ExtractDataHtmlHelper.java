@@ -142,6 +142,17 @@ public class ExtractDataHtmlHelper {
 		return found;
 	}
 	
+	public static String extractZip(String text){
+		String zip = null;
+		Pattern p = Pattern.compile("(\\d{5})");
+		Matcher m = p.matcher(text);
+		if (m.find()) {
+		    zip = m.group(1);
+		}
+		return zip;
+	}
+
+	
 	public static String extractColor(String content){
 		int start = -1;
 		Vehicle vehicle = new Vehicle();

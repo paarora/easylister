@@ -80,7 +80,7 @@ public class AutotraderItemParser implements ItemParser{
 				price = priceInfo.elements().nextNode().toPlainTextString();
 			}
 			// System.out.println("vehicleTitle:"+vehicleTitle);
-			vehicle.setPrice(ExtractDataHtmlHelper.formatText(price));
+			vehicle.setPrice(ExtractDataHtmlHelper.getNumericString(ExtractDataHtmlHelper.formatText(price)));
 
 			NodeList allTables = extract(nodeList, new TagNameFilter(
 					ParserConstants.TABLE));
@@ -98,7 +98,7 @@ public class AutotraderItemParser implements ItemParser{
 					if (containerTr.getChildren().elementAt(1).getChildren().elementAt(0).toPlainTextString() != null) {
 						String mileage = ExtractDataHtmlHelper
 								.formatText(containerTr.getChildren().elementAt(1).getChildren().elementAt(0).toPlainTextString());
-						vehicle.setMileage(mileage);
+						vehicle.setMileage(ExtractDataHtmlHelper.getNumericString(mileage));
 					}
 				} else if (containerTr.getChildren().elementAt(0).getChildren().elementAt(0).toPlainTextString().equalsIgnoreCase(
 								ParserConstants.A_TRANSMISSION)) {

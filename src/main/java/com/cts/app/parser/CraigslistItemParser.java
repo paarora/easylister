@@ -7,14 +7,15 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.TagNode;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
-import org.htmlparser.PrototypicalNodeFactory;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserUtils;
 import org.htmlparser.util.SimpleNodeIterator;
 
 import com.cts.app.data.ExtractDataHtmlHelper;
@@ -30,15 +31,23 @@ public class CraigslistItemParser implements ItemParser{
 		try {
 			parser = new Parser(url);
 			NodeList nodeList = parser.parse(null);
-			
-			PrototypicalNodeFactory factory = new PrototypicalNodeFactory ();
-			factory.put("SECTION", new SectionTag());
-			factory.setTagPrototype(new SectionTag());
-			parser.setNodeFactory(factory);
+
 			// extract HTML
 			nodeList = extract(nodeList, new TagNameFilter(ParserConstants.HTML));
+			
+			HtmlCleaner cleaner = new HtmlCleaner();
+	        CleanerProperties props = cleaner.getProperties();
+	        props.setAllowHtmlInsideAttributes(true);
+	        props.setAllowMultiWordAttributes(true);
+	        props.setRecognizeUnicodeChars(true);
+	        props.setOmitComments(true);
+	        
+	        TagNode tagNode = cleaner.clean(nodeList.toHtml());
+	        Object[] myNodes = tagNode.evaluateXPath("//*[@id='postingbody']/text()");
+	        String description = myNodes[0].toString();
 			// extract BODY
-			nodeList = extract(nodeList, new TagNameFilter(ParserConstants.BODY));
+						nodeList = extract(nodeList, new TagNameFilter(ParserConstants.BODY));
+			
 			// extract header from body node
 			NodeList headerNodeList = extract(nodeList, new TagNameFilter(ParserConstants.CR_H2));
 			
@@ -61,15 +70,11 @@ public class CraigslistItemParser implements ItemParser{
 			}
 			vehicle.setVehicleTitle(vehicleTitle);
 
-			NodeList sections = extract(nodeList, new TagNameFilter(ParserConstants.SECTION));
+		//	NodeList sections = extract(nodeList, new TagNameFilter(ParserConstants.SECTION));
 			
 			// extract all divs from body node
-			NodeList divs = extract(nodeList, new TagNameFilter(ParserConstants.DIV));
+		//	NodeList divs = extract(nodeList, new TagNameFilter(ParserConstants.DIV));
 
-			// extract div id="userbody" from the extracted div's
-			NodeList userContent = extract(nodeList, new HasAttributeFilter(ParserConstants.ID, ParserConstants.CR_BODY));
-			String descriptionHtml = userContent.toHtml();
-			vehicle.setDescription(descriptionHtml);
 
 			// extract all images from the page
 			NodeList imageNodes = extract(nodeList, new HasAttributeFilter(ParserConstants.ID, ParserConstants.THUMBS));
@@ -83,51 +88,35 @@ public class CraigslistItemParser implements ItemParser{
 			vehicle.setImages(images);
 
 			// extract plain text (non html) description
-			String[] a = ParserUtils.splitTags(descriptionHtml,new String[] { ParserConstants.CR_UL });
-			String descriptionText = ExtractDataHtmlHelper.stripHtmlTag(a[0]);
-			vehicle.setDescription(descriptionText);
+			vehicle.setDescription(description);
 
 			// get transmission
-			vehicle.setTransmission(ExtractDataHtmlHelper.extractTransmission(vehicleTitle, descriptionText));
-			/*String transmission = "";
-			boolean found = extractTransmission(vehicleTitle, descriptionText,"auto[a-zA-Z]");
-			if (found) {
-				transmission = MototrsLocalConstants.AUTOMATIC;
-			} else {
-				found = extractTransmission(vehicleTitle, descriptionText,
-						"manua[a-zA-Z]");
-				if (found) {
-					transmission = MototrsLocalConstants.MANUAL;
-				} else {
-					found = extractTransmission(vehicleTitle, descriptionText,
-							"[a-zA-Z]speed");
-				}
-			}
-			vehicle.setTransmission(transmission);*/
+			vehicle.setTransmission(ExtractDataHtmlHelper.extractTransmission(vehicleTitle, description));
+			
 
 			// get vehicle title status
-			vehicle.setTitleStatus(extractTitleStatus(vehicleTitle, descriptionText));
+			vehicle.setTitleStatus(extractTitleStatus(vehicleTitle, description));
 			ExtractDataHtmlHelper.extractMakeModel(vehicle, vehicleTitle);
 
 			// get year from header if not present then from desc
 			String year = extractYear(vehicleTitle);
 			if ("".equals(year)) {
-				year = extractYear(descriptionText);
+				year = extractYear(description);
 			}
 			vehicle.setYear(year);
 
 			// get title
-			vehicle.setTitleStatus(extractTitle(vehicleTitle, descriptionText));
-			StringTokenizer tokens = new StringTokenizer(descriptionText," \t\n\r\f:.");
+			vehicle.setTitleStatus(extractTitle(vehicleTitle, description));
+			StringTokenizer tokens = new StringTokenizer(description," \t\n\r\f:.");
 			//get Vin
 			vehicle.setVin(extractVin(tokens));
 			//get miles
 			vehicle.setMileage(extractMiles(tokens));
 			//get color
-			vehicle.setExteriorColour(ExtractDataHtmlHelper.extractColor(descriptionText));
+			vehicle.setExteriorColour(ExtractDataHtmlHelper.extractColor(description));
 			
 			// get cylinders
-			vehicle.setCylinder(extractCylinder(descriptionText));
+			vehicle.setCylinder(extractCylinder(description));
 		} catch (Exception e) {
 			throw e;
 		}
@@ -281,7 +270,7 @@ public class CraigslistItemParser implements ItemParser{
 	
 	public static void main(String args[]) throws Exception {
 		CraigslistItemParser ca = new CraigslistItemParser();
-		Vehicle vh = ca.parseItem("http://sfbay.craigslist.org/eby/ctd/3828325470.html");
+		Vehicle vh = ca.parseItem("http://sfbay.craigslist.org/sfc/cto/3862925971.html");
 		System.out.println(vh.getMake());
 	}
 

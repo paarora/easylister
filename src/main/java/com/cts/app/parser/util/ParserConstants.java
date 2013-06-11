@@ -149,6 +149,7 @@ public class ParserConstants {
 	public static final String C_EXTERIOR_COLOR ="ExteriorColor";
 	public static final String C_INTERIOR_COLOR ="InteriorColor";
 	public static final String C_TRANSMISSION ="Transmission";
+	public static final String C_SELLER_ADDRESS = "sellerAddress";
 	public static final String ABOUT_THIS_VEHICLE ="aboutThisVehicleBox";
 	public static final String PADDED_BOX ="paddedBox";
 	public static final String SELLERS_NOTES ="Seller's Notes:";
