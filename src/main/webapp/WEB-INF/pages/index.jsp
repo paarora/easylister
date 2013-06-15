@@ -1,5 +1,5 @@
 <html>
-
+<title>Easylister Home</title>
 <style type="text/css">
 body {
 	border: 0px none;

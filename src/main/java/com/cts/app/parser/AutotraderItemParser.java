@@ -42,6 +42,8 @@ public class AutotraderItemParser implements ItemParser{
 			nodeList = extract(nodeList, new TagNameFilter(
 					ParserConstants.BODY));
 
+			NodeList h1 = extract(nodeList, new TagNameFilter(
+					ParserConstants.A_H1));
 			// extract all divs from body node
 			NodeList divs = extract(nodeList, new TagNameFilter(
 					ParserConstants.DIV));
@@ -58,9 +60,10 @@ public class AutotraderItemParser implements ItemParser{
 					"primary-price"));
 			StringBuffer vehicleTitleStBuff = new StringBuffer();
 			
-			if (vehicleInfo.elements().hasMoreNodes()) {
+			vehicleTitleStBuff.append(h1.elementAt(1).toPlainTextString());
+			/*if (vehicleInfo.elements().hasMoreNodes()) {
 				vehicleTitleStBuff.append(vehicleInfo.elements().nextNode().getChildren().elementAt(0).getChildren().elementAt(0).getText());
-			}
+			}*/
 			if (priceInfo.elements().hasMoreNodes()) {
 				vehicleTitleStBuff.append(" ");
 				vehicleTitleStBuff.append(priceInfo.elements().nextNode()
@@ -200,10 +203,10 @@ public class AutotraderItemParser implements ItemParser{
 
 			}
 
-			NodeList picInfo = extract(divs, new HasAttributeFilter(
-					ParserConstants.CLASS,
-					ParserConstants.PHOTOS_CONTAINER));
-			NodeList tables = extract(picInfo, new TagNameFilter(
+			NodeList scripts = extract(nodeList, new TagNameFilter(
+					ParserConstants.SCRIPT));
+			String content = scripts.elementAt(27).toPlainTextString();
+			/*NodeList tables = extract(picInfo, new TagNameFilter(
 					ParserConstants.A));
 			SimpleNodeIterator it = tables.elements();
 			List<String> images = new ArrayList<String>();
@@ -228,17 +231,17 @@ public class AutotraderItemParser implements ItemParser{
 							ParserConstants.IMG_565_421);
 					images.add(imgL);
 				}
-			}
-			vehicle.setImages(images);
+			}*/
+			vehicle.setImages(extractImages(content));
 
 			NodeList userContentNode = extract(divs, new HasAttributeFilter(
 					ParserConstants.ID,
-					"j_id634922276_c1e6d2a"));
+					"j_id_15l_1"));
 			NodeList userContent = extract(userContentNode, new TagNameFilter(
 					"p"));
 			String descriptionTxt = "";
 			if (userContent.elements().hasMoreNodes()) {
-				descriptionTxt = userContent.elements().nextNode().getChildren().elementAt(0).getChildren().elementAt(0)
+				descriptionTxt = userContent.elements().nextNode().getChildren().elementAt(0)
 						.toPlainTextString();
 			}
 			vehicle.setDescription(ExtractDataHtmlHelper
@@ -251,32 +254,15 @@ public class AutotraderItemParser implements ItemParser{
 			String year = extractYear(vehicleTitle);
 			vehicle.setYear(year);
 
-			// get title
-			vehicle.setTitleStatus(extractTitle(vehicleTitle, descriptionTxt));
-
+			if (!"Other".equalsIgnoreCase(ExtractDataHtmlHelper.extractTitleStatus(vehicleTitle, descriptionTxt))) {
+				vehicle.setTitleStatus(ExtractDataHtmlHelper.extractTitleStatus(vehicleTitle, descriptionTxt));
+			} else {
+				vehicle.setTitleStatus("Clear");
+			}
 		} catch (Exception e) {
 			throw e;
 		}
 		return vehicle;
-	}
-	
-	private String extractTitle(String header, String plainTextDesc) {
-		String cartitle = extractTitle(header, plainTextDesc,
-				ParserConstants.CLEAN);
-		if ("".equals(cartitle)) {
-			cartitle = extractTitle(header, plainTextDesc,
-					ParserConstants.SALVAGE);
-		}
-		return cartitle;
-	}
-
-	private String extractTitle(String header, String plainTextDesc,
-			String regex) {
-		if (header.toLowerCase().indexOf(regex) > 0
-				|| plainTextDesc.toLowerCase().indexOf(regex) > 0) {
-			return regex;
-		}
-		return "";
 	}
 
 	private String extractYear(String content) {
@@ -292,6 +278,17 @@ public class AutotraderItemParser implements ItemParser{
 
 	private static NodeList extract(NodeList nodeList, NodeFilter filter) {
 		return nodeList.extractAllNodesThatMatch(filter, true);
+	}
+	
+	private static List<String> extractImages(String content){
+		List<String> images = new ArrayList<String>();
+		Pattern p = Pattern.compile("\"url\":\"(.+?)\",");
+		Matcher m = p.matcher(content);
+		while (m.find()) {
+			//MatchResult re = m.toMatchResult();
+			images.add(content.subSequence(m.start()+7, m.end()-2).toString());
+		}
+		return images;
 	}
 	
 	public static void main(String args[]) throws Exception {

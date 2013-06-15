@@ -157,7 +157,7 @@ public class ExtractDataHtmlHelper {
 		int start = -1;
 		Vehicle vehicle = new Vehicle();
 		for (String vehicleColor : vehicle.getAllExteriorColors().values()) {
-			start = content.indexOf(vehicleColor); 
+			start = content.toLowerCase().indexOf(vehicleColor.toLowerCase()); 
 			if (start != -1) {
 				if ( (Character.isLetter(content.charAt(start+vehicleColor.length()))) || //if there isn't a space before and after the color then it would be something else like bluetooth 
 						(Character.isLetter(content.charAt(start-1))) ){
@@ -195,5 +195,21 @@ public class ExtractDataHtmlHelper {
 			}
 		}
 		return sBuff.toString();
+	}
+	
+	public static String extractTitleStatus(String vehicleTitle,
+			String descriptionText) {
+		// get vehicle title status
+		if (vehicleTitle.toLowerCase().indexOf(ParserConstants.SALVAGE.toLowerCase()) > 0
+				|| descriptionText.toLowerCase().indexOf(
+						ParserConstants.SALVAGE.toLowerCase()) > 0) {
+			return ParserConstants.SALVAGE;
+		} else if (vehicleTitle.toLowerCase().indexOf(ParserConstants.CLEAR.toLowerCase()) > 0
+				|| descriptionText.toLowerCase().indexOf(ParserConstants.CLEAR.toLowerCase()) > 0
+				|| vehicleTitle.toLowerCase().indexOf(ParserConstants.CLEAN.toLowerCase()) > 0
+				|| descriptionText.toLowerCase().indexOf(ParserConstants.CLEAN.toLowerCase()) > 0) {
+			return ParserConstants.CLEAR;
+		}
+		return ParserConstants.OTHER;
 	}
 }

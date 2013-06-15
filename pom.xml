@@ -43,10 +43,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-	<groupId>jstl</groupId>
-	<artifactId>jstl</artifactId>
-	<version>1.2</version>
-</dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 		<dependency>
 			<groupId>com.cts.html</groupId>
 			<artifactId>htmlparser</artifactId>
@@ -213,22 +213,10 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-          <groupId>net.sourceforge.saxon</groupId>
-          <artifactId>saxon</artifactId>
-          <version>9.1.0.8</version>
-      </dependency>
-      <dependency>
-          <groupId>net.sourceforge.saxon</groupId>
-          <artifactId>saxon</artifactId>
-          <version>9.1.0.8</version>
-          <classifier>s9api</classifier>
-      </dependency>
-      <dependency>
-	<groupId>net.sourceforge.htmlcleaner</groupId>
-	<artifactId>htmlcleaner</artifactId>
-	<version>2.2</version>
-</dependency>
-
+			<groupId>net.sourceforge.htmlcleaner</groupId>
+			<artifactId>htmlcleaner</artifactId>
+			<version>2.2</version>
+		</dependency>
 
 	</dependencies>
 	<build>

@@ -13,9 +13,9 @@ public class ParserConstants {
 	public static final String MANUAL = "Manual";
 	public static final String OTHER ="Other";
 	public static final String UNSPECIFIED ="Unspecified";
-	public static final String CLEAR ="clear";
+	public static final String CLEAR ="Clear";
 	public static final String CLEAN ="clean";
-	public static final String SALVAGE ="salvage";
+	public static final String SALVAGE ="Salvage";
 	public static final String SPAN = "SPAN";
 	public static final String A = "a";
 	public static final String DATA = "data";

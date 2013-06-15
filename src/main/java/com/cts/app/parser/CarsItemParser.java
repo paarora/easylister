@@ -193,10 +193,16 @@ public class CarsItemParser implements ItemParser{
 			description = ExtractDataHtmlHelper.formatText(description);
 			if (description != null)
 				vehicle.setDescription(description);
-			title = extractTitle(vehicleTitle, description);
-			if (title != null)
-				vehicle.setTitleStatus(title);
+			if (!"Other".equalsIgnoreCase(ExtractDataHtmlHelper.extractTitleStatus(vehicleTitle, description))) {
+				vehicle.setTitleStatus(ExtractDataHtmlHelper.extractTitleStatus(vehicleTitle, description));
+			} else {
+				vehicle.setTitleStatus("Clear");
+			}
 
+			
+			
+			
+			
 			NodeList thumbnailsContents = extract(divs, new HasAttributeFilter(
 					ParserConstants.CLASS,
 					ParserConstants.THUMBNAIL));
@@ -247,25 +253,6 @@ public class CarsItemParser implements ItemParser{
 		return value;
 	}
 
-	private String extractTitle(String header, String plainTextDesc) {
-		String cartitle = extractTitle(header, plainTextDesc,
-				ParserConstants.CLEAR);
-		if ("".equals(cartitle)) {
-			cartitle = extractTitle(header, plainTextDesc,
-					ParserConstants.SALVAGE);
-		}
-		return cartitle;
-	}
-
-	private String extractTitle(String header, String plainTextDesc,
-			String regex) {
-		if (header.toLowerCase().indexOf(regex) > 0
-				|| plainTextDesc.toLowerCase().indexOf(regex) > 0) {
-			return regex;
-		}
-		return "";
-	}
-
 	private String extractYear(String content) {
 		Pattern p = Pattern.compile("(19|20)\\d\\d");
 		Matcher m = p.matcher(content);
@@ -296,9 +283,18 @@ public class CarsItemParser implements ItemParser{
 	}
 
 	public static void main(String args[]) throws Exception {
-		CarsItemParser ca = new CarsItemParser();
+		/*CarsItemParser ca = new CarsItemParser();
 		Vehicle vh = ca.parseItem("http://www.cars.com/go/search/detail.jsp?tracktype=newcc&csDlId=&csDgId=&listingId=106673284&listingRecNum=4&criteria=sf1Dir%3DDESC%26mkId%3D20077%26mdId%3D22274%26rd%3D30%26crSrtFlds%3DfeedSegId-mkId-mdId%26zc%3D95101%26rn%3D0%26PMmt%3D1-1-0%26sf2Dir%3DASC%26sf1Nm%3Dprice%26sf2Nm%3Dlocation%26isDealerGrouping%3Dfalse%26rpp%3D50%26feedSegId%3D28705&aff=national&listType=1");
-		System.out.println(vh.getMake());
+		System.out.println(vh.getMake());*/
+		String content ="{\"url\":\"http:\\images.autotrader.com\\scaler\\544\\408\\images.jpg\",\"thumbnail\"";
+		Pattern p = Pattern.compile("\"url\":\"(.*)\",");
+		Matcher m = p.matcher(content);
+		String year = "";
+		if (m.find()) {
+			MatchResult re = m.toMatchResult();
+			year = content.subSequence(re.start()+7, re.end()-2).toString();
+		}
+		System.out.println(year);
 	}
 
 }

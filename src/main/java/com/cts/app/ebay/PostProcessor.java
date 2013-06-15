@@ -29,7 +29,7 @@ public class PostProcessor {
 		if (isBlacklisted) {
 			try {
 				SmsHelper.sendMessage("+14088595103",
-						"Blacklist VIN used, Transaction id : " + recordKey);
+						"Blacklisted VIN was used, Transaction id : " + recordKey);
 			} catch (TwilioRestException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
